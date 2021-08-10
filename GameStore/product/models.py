@@ -15,10 +15,10 @@ class Productbase(models.Model):
         ('xbox','xbox'),
         ('nintendo', 'nintendo switch')
     )
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=255)
     stock = models.BooleanField(default=False)
-    device = models.CharField(max_length=20,choices=devices)
-    description = models.TextField(blank=True,null=True)
+    device = models.CharField(max_length=20, choices=devices)
+    description = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.RESTRICT)
     price = models.FloatField(default=0.0)
     added_time = models.DateTimeField(auto_now_add=True)
@@ -27,3 +27,11 @@ class Productbase(models.Model):
         return self.name, self.description
 
 
+class ImageProduct(models.Model):
+    name = models.CharField(max_length=255)
+    product = models.ForeignKey(Productbase, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/')
+    default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name, self.product
